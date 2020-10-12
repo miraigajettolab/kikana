@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import toHiragana from '../../../src/cyrillicToHiragana'
+import toHiragana from '../../../src/toHiragana'
+import cyrillicToHiragana from '../../../src/cyrillicToHiragana'
 import './App.css';
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
       value={input}
       onChange={change => setInput(change.target.value) }>
       </input>
-      {toHiragana(input)}
+      {cyrillicToHiragana(input)}
     </div>
   );
 }
