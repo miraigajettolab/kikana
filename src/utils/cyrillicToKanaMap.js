@@ -1,24 +1,28 @@
 import { transform, getSubTreeOf, createCustomMapping } from './kanaMapping';
 
+//WARNING: BUGS GALORE
+
 // NOTE: not exactly kunrei shiki, for example ぢゃ -> dya instead of zya, to avoid name clashing
 /* eslint-disable */
 // prettier-ignore
-const BASIC_KUNREI = {
-    а: 'あ', и: 'い', у: 'う', е: 'え', о: 'お',
-    к: { а: 'か', и: 'き', у: 'く', е: 'け', о: 'こ', },
-    с: { а: 'さ', и: 'し', у: 'す', е: 'せ', о: 'そ', },
-    т: { а: 'た', и: 'ち', у: 'つ', е: 'て', о: 'と', },
-    н: { а: 'な', и: 'に', у: 'ぬ', е: 'ね', о: 'の', },
-    х: { а: 'は', и: 'ひ', у: 'ふ', е: 'へ', о: 'ほ', },
-    м: { а: 'ま', и: 'み', у: 'む', е: 'め', о: 'も', },
-    й: { а: 'や', у: 'ゆ', о: 'よ' }, //MASSIVE WARNING
-    р: { а: 'ら', и: 'り', у: 'る', е: 'れ', о: 'ろ', },
-    в: { а: 'わ', и: 'ゐ', е: 'ゑ', о: 'を', },
-    г: { а: 'が', и: 'ぎ', у: 'ぐ', е: 'げ', о: 'ご', },
-    дз: { а: 'ざ', и: 'じ', у: 'ず', е: 'ぜ', о: 'ぞ', },
-    д: { а: 'だ', и: 'ぢ', у: 'づ', е: 'で', о: 'ど', },
-    б: { а: 'ば', и: 'び', у: 'ぶ', е: 'べ', о: 'ぼ', },
-    п: { а: 'ぱ', и: 'ぴ', у: 'ぷ', е: 'ぺ', о: 'ぽ', }
+const BASIC_KUNREI = { //EXPANDED POLIVANOV
+    а: 'あ', и: 'い', у: 'う', э: 'え', е: 'え', о: 'お',
+    к: { а: 'か', и: 'き', у: 'く', э: 'け', е: 'け', о: 'こ', },
+    с: { а: 'さ', и: 'し', у: 'す', э: 'せ', е: 'せ', о: 'そ', },
+    т: { а: 'た', и: 'ち', у: 'つ', э: 'て', е: 'て', о: 'と', },
+    н: { а: 'な', и: 'に', у: 'ぬ', э: 'ね', е: 'ね', о: 'の', },
+    х: { а: 'は', и: 'ひ', у: 'ふ', э: 'へ', е: 'へ', о: 'ほ', },
+    м: { а: 'ま', и: 'み', у: 'む', э: 'め', е: 'め', о: 'も', },
+    й: { а: 'や', у: 'ゆ', о: 'よ' },
+    р: { а: 'ら', и: 'り', у: 'る', э: 'れ', е: 'れ', о: 'ろ', },
+    в: { а: 'わ', и: 'ゐ', э: 'ゑ', е: 'ゑ', о: 'を', },
+    г: { а: 'が', и: 'ぎ', у: 'ぐ', э: 'げ', е: 'げ', о: 'ご', },
+    дз: { а: 'ざ', и: 'じ', у: 'ず', э: 'ぜ', е: 'ぜ', о: 'ぞ', },//TODO:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    з: { а: 'ざ', и: 'じ', у: 'ず', э: 'ぜ', е: 'ぜ', о: 'ぞ', }, //over polivanov
+    д: { а: 'だ', и: 'ぢ', у: 'づ', э: 'で', е: 'で', о: 'ど', },
+    б: { а: 'ば', и: 'び', у: 'ぶ', э: 'べ', е: 'べ', о: 'ぼ', },
+    п: { а: 'ぱ', и: 'ぴ', у: 'ぷ', э: 'ぺ', е: 'ぺ', о: 'ぽ', }
+    //v: { a: 'ゔぁ', i: 'ゔぃ', u: 'ゔ', e: 'ゔぇ', o: 'ゔぉ',} 
   };
 
 const SPECIAL_SYMBOLS = {
@@ -43,50 +47,94 @@ const SPECIAL_SYMBOLS = {
 };
 
 const CONSONANTS = {
-  k: 'き',
-  s: 'し',
-  t: 'ち',
-  n: 'に',
-  h: 'ひ',
-  m: 'み',
-  r: 'り',
-  g: 'ぎ',
-  z: 'じ',
-  d: 'ぢ',
-  b: 'び',
-  p: 'ぴ',
-  v: 'ゔ',
-  q: 'く',
-  f: 'ふ',
+  к: 'き',
+  с: 'し',
+  ш: 'し', //!!!
+  щ: 'し', //!!!
+  т: 'ち',
+  ч: 'ち', //!!!
+  ц: 'ち', // Спальвин
+  н: 'に',
+  х: 'ひ',
+  м: 'み',
+  р: 'り',
+  г: 'ぎ',
+  дз: 'じ',//TODO:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  з: 'じ',//!!!
+  д: 'ぢ',
+  б: 'び',
+  п: 'ぴ',
+  //v: 'ゔ',
+  //к: 'く', //wtf^2
+  ф: 'ふ', //wtf
 };
-const SMALL_Y = { ya: 'ゃ', yi: 'ぃ', yu: 'ゅ', ye: 'ぇ', yo: 'ょ' };
-const SMALL_VOWELS = { a: 'ぁ', i: 'ぃ', u: 'ぅ', e: 'ぇ', o: 'ぉ' };
+const SMALL_Y = { 
+    я: 'ゃ',
+    йа: 'ゃ', //weird
+    ья: 'ゃ', //weird
+    ьйа: 'ゃ', //super weird
+    //yi: 'ぃ',
+    ю: 'ゅ',
+    йу: 'ゅ', //weird
+    ью: 'ゅ', //weird
+    ьйу: 'ゅ', //super weird
+    //ye: 'ぇ',
+    ё: 'ょ', //ok
+    йо: 'ょ', 
+    ьё: 'ょ', //weird
+    ьйо: 'ょ' //super weird 
+};
+const SMALL_VOWELS = { а: 'ぁ', и: 'ぃ', у: 'ぅ', э: 'ぇ', е: 'ぇ', о: 'ぉ' };
 
 // typing one should be the same as having typed the other instead
 const ALIASES = {
-  sh: 'sy', // sha -> sya
-  ch: 'ty', // cho -> tyo
-  cy: 'ty', // cyo -> tyo
-  chy: 'ty', // chyu -> tyu
-  shy: 'sy', // shya -> sya
-  j: 'zy', // ja -> zya
-  jy: 'zy', // jye -> zye
+  
+  //й:'и', TODO: Find a way to incorporate it without breaking йо йа йю
 
+  ща:'ся',
+  щу: 'сю',
+  що:'сё',
+  ча:'тя',
+  чу:'тю',
+  чо:'тё',
+  дз:'з',
   // exceptions to above rules
-  shi: 'si',
-  chi: 'ti',
-  tsu: 'tu',
-  ji: 'zi',
-  fu: 'hu',
+  ши: 'си',
+  щи: 'си',
+  чи: 'ти',
+  ци: 'ти', // Спальвин
+  тсу: 'ту',
+  цу: 'ту',
+  фу: 'ху',
+  я: 'йа',
+  ю: 'йу',
+  ё: 'йо',
+  джа: 'дзя',
+  джо: 'дзё',
+  джу: 'дзю',
+  джэ: 'дзэ', //хммммм　BETTER REMOVE THAT
+  джя: 'дзя',
+  джё: 'дзё',
+  джю: 'дзю',
+  джи: 'дзи',
+  дже: 'дзэ', //хммммм　BETTER REMOVE THAT
+
+  цзи: 'ди', //Спальвин
+  цзу: 'ду', //Спальвин
+  цзя: 'дя', //Спальвин
+  цзю: 'дю', //Спальвин
+  цзйо: 'дё', //Спальвин
+  цзё: 'дё', //Позднеев
 };
 
 // xtu -> っ
 const SMALL_LETTERS = Object.assign(
   {
+    /*TODO: This \/
     tu: 'っ',
     wa: 'ゎ',
     ka: 'ヵ',
-    ke: 'ヶ',
+    ke: 'ヶ',*/
   },
   SMALL_VOWELS,
   SMALL_Y
@@ -153,12 +201,12 @@ function createCyrillicToKanaMap() {
   });
 
   // different ways to write ん
-  ['n', "n'", 'xn'].forEach((nChar) => {
+  ['н', "нъ", 'ън'].forEach((nChar) => {
     subtreeOf(nChar)[''] = 'ん';
   });
 
   // c is equivalent to k, but not for chi, cha, etc. that's why we have to make a copy of k
-  kanaTree.c = JSON.parse(JSON.stringify(kanaTree.k));
+  //kanaTree.c = JSON.parse(JSON.stringify(kanaTree.k)); //TODO: DEAL WITH IT
 
   Object.entries(ALIASES).forEach(([string, alternative]) => {
     const allExceptLast = string.slice(0, string.length - 1);
@@ -213,13 +261,15 @@ function createCyrillicToKanaMap() {
       return tsuTree;
     }, {});
   }
+
   // have to explicitly name c here, because we made it a copy of k, not a reference
-  [...Object.keys(CONSONANTS), 'c', 'y', 'w', 'j'].forEach((consonant) => {
+  [...Object.keys(CONSONANTS)].forEach((consonant) => { //'c', 'y', 'w', 'j'
     const subtree = kanaTree[consonant];
     subtree[consonant] = addTsu(subtree);
   });
+
   // nn should not be っん
-  delete kanaTree.n.n;
+  delete kanaTree.н.н;
   // solidify the results, so that there there is referential transparency within the tree
   return Object.freeze(JSON.parse(JSON.stringify(kanaTree)));
 }
@@ -238,7 +288,7 @@ export const USE_OBSOLETE_KANA_MAP = createCustomMapping({ wi: 'ゐ', we: 'ゑ' 
 export function IME_MODE_MAP(map) {
   // in IME mode, we do not want to convert single ns
   const mapCopy = JSON.parse(JSON.stringify(map));
-  mapCopy.n.n = { '': 'ん' };
-  mapCopy.n[' '] = { '': 'ん' };
+  mapCopy.н.н = { '': 'ん' };
+  mapCopy.н[' '] = { '': 'ん' };
   return mapCopy;
 }
