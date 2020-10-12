@@ -110,6 +110,9 @@ export const JAPANESE_RANGES = [
 ];
 
 const MODERN_ENGLISH = [0x0000, 0x007f];
+
+const CYRILLIC = [0x0400, 0x04ff]
+
 const HEPBURN_MACRON_RANGES = [
   [0x0100, 0x0101], // Ā ā
   [0x0112, 0x0113], // Ē ē
@@ -122,7 +125,7 @@ const SMART_QUOTE_RANGES = [
   [0x201c, 0x201d], // “ ”
 ];
 
-export const ROMAJI_RANGES = [MODERN_ENGLISH, ...HEPBURN_MACRON_RANGES];
+export const ROMAJI_RANGES = [MODERN_ENGLISH, CYRILLIC, ...HEPBURN_MACRON_RANGES]; //TODO: get cyrillic out of here!!!!
 
 export const EN_PUNCTUATION_RANGES = [
   [0x20, 0x2f],
