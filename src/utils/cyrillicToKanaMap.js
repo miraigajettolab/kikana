@@ -13,7 +13,7 @@ const BASIC_KUNREI = { //EXPANDED POLIVANOV
     н: { а: 'な', и: 'に', у: 'ぬ', э: 'ね', е: 'ね', о: 'の', },
     х: { а: 'は', и: 'ひ', у: 'ふ', э: 'へ', е: 'へ', о: 'ほ', },
     м: { а: 'ま', и: 'み', у: 'む', э: 'め', е: 'め', о: 'も', },
-    й: { а: 'や', у: 'ゆ', о: 'よ' },
+    й: { а: 'や', у: 'ゆ', о: 'よ', },
     р: { а: 'ら', и: 'り', у: 'る', э: 'れ', е: 'れ', о: 'ろ', },
     в: { а: 'わ', и: 'ゐ', э: 'ゑ', е: 'ゑ', о: 'を', },
     г: { а: 'が', и: 'ぎ', у: 'ぐ', э: 'げ', е: 'げ', о: 'ご', },
@@ -88,9 +88,6 @@ const SMALL_VOWELS = { а: 'ぁ', и: 'ぃ', у: 'ぅ', э: 'ぇ', е: 'ぇ', о
 
 // typing one should be the same as having typed the other instead
 const ALIASES = {
-  
-  //й:'и', TODO: Find a way to incorporate it without breaking йо йа йю
-
   ща:'ся',
   щу: 'сю',
   що:'сё',
@@ -117,6 +114,7 @@ const ALIASES = {
   джё: 'дзё',
   джю: 'дзю',
   джи: 'дзи',
+  жи: 'дзи', //хммммм　BETTER REMOVE THAT TODO: Decide whether we want "ж + vowel" entries
   дже: 'дзэ', //хммммм　BETTER REMOVE THAT
 
   цзи: 'ди', //Спальвин
@@ -204,6 +202,9 @@ function createCyrillicToKanaMap() {
   ['н', "нъ", 'ън'].forEach((nChar) => {
     subtreeOf(nChar)[''] = 'ん';
   });
+
+  //sometimes й = い、but not in йа, йо, йю cases
+  subtreeOf('й')[''] = 'い';
 
   // c is equivalent to k, but not for chi, cha, etc. that's why we have to make a copy of k
   //kanaTree.c = JSON.parse(JSON.stringify(kanaTree.k)); //TODO: DEAL WITH IT
