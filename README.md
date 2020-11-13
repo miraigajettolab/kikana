@@ -5,9 +5,9 @@ JS библиотека реализующая интуитивно понятн
   * Целью такого гибкого метода транскрипции является улучшение опыт пользователя. Разные пользователи могут использовать варианты транскрипции исходя из своих личных предпочтений
 
 ## Демо:
-Потыкать можно тут: kikana-dev-test.surge.sh
+[Потыкать можно тут](https://kikana-dev-test.surge.sh)
 *(В форму вводится кириллица, хирагана появляется в шапке страницы)*
 
 ## Attributions:
 
-This is a modification of github.com/WaniKani/WanaKana project. The original project is distributed under MIT lisence
+This is a modification of https://github.com/WaniKani/WanaKana project. The original project is distributed under MIT lisence
